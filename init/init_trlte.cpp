@@ -34,6 +34,7 @@
 
 #include <android-base/logging.h>
 #include <android-base/properties.h>
+
 #include "property_service.h"
 #include "vendor_init.h"
 
@@ -44,8 +45,8 @@ using android::init::property_set;
 
 void gsm_properties()
 {
-    property_override("telephony.lteOnGsmDevice", "1");
-    property_override("ro.telephony.default_network", "9");
+    property_set("telephony.lteOnGsmDevice", "1");
+    property_set("ro.telephony.default_network", "9");
 }
 
 void cdma_properties(char const *operator_alpha,
@@ -127,8 +128,10 @@ void init_target_properties()
         property_override_dual("ro.product.device", "ro.vendor.product.device", "trltecan");
         property_override_dual("ro.product.name", "ro.vendor.product.name", "trltecan");
         gsm_properties();
+    } else {
+        gsm_properties();
     }
 
     std::string device = GetProperty("ro.product.device", "");
-    LOG(ERROR) << "Found bootloader id " << bootloader <<  " setting build properties for " << device <<  " device" << std::endl;
+    LOG(ERROR) << "Found bootloader id " << bootloader << " setting build properties for " << device << " device" << std::endl;
 }
